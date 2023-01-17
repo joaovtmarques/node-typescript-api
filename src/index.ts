@@ -1,11 +1,18 @@
 import express from 'express';
 import { config } from 'dotenv';
+import { MongoClient } from './database/mongo';
 
-config();
+const main = async () => {
+  config();
 
-const app = express();
+  const app = express();
 
-const port = process.env.PORT || 8000;
+  const port = process.env.PORT || 8000;
 
-// eslint-disable-next-line no-console
-app.listen(port, () => console.log(`listening on port ${port}`));
+  await MongoClient.connect();
+
+  // eslint-disable-next-line no-console
+  app.listen(port, () => console.log(`listening on port ${port}`));
+};
+
+main();
