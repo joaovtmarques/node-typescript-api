@@ -10,6 +10,13 @@ export const created = <T>(body: any): HttpResponse<T> => ({
   body,
 });
 
+export const unprocessable = (message: string): HttpResponse<string> => {
+  return {
+    statusCode: HttpStatusCode.UNPROCESSABLE,
+    body: message,
+  };
+};
+
 export const badRequest = (message: string): HttpResponse<string> => {
   return {
     statusCode: HttpStatusCode.BAD_REQUEST,

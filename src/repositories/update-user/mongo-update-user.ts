@@ -1,4 +1,6 @@
 import { ObjectId } from 'mongodb';
+import { singleton } from 'tsyringe';
+
 import {
   IUpdateUserParams,
   IUpdateUserRepository,
@@ -7,6 +9,7 @@ import { MongoClient } from '@/src/database/mongo';
 import { User } from '@/src/models/user';
 import { MongoUser } from '../mongo-protocols';
 
+@singleton()
 export class MongoUpdateUserRepository implements IUpdateUserRepository {
   async updateUser(id: string, params: IUpdateUserParams): Promise<User> {
     await MongoClient.db.collection('users').updateOne(

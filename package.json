@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node dist/src/index.js",
     "start:dev": "tsx watch src/index.ts",
-    "build": "tsoa spec-and-routes && tsc && tsc-alias",
+    "build": "yarn swagger && tsoa spec-and-routes && tsc && tsc-alias",
     "husky:prepare": "husky install",
     "swagger": "tsoa routes && tsoa swagger"
   },

@@ -1,9 +1,12 @@
+import { ObjectId } from 'mongodb';
+import { singleton } from 'tsyringe';
+
 import { IDeleteUserRepository } from '@/src/controllers/delete-user/protocols';
 import { MongoClient } from '@/src/database/mongo';
 import { User } from '@/src/models/user';
-import { ObjectId } from 'mongodb';
 import { MongoUser } from '../mongo-protocols';
 
+@singleton()
 export class MongoDeleteUserRepository implements IDeleteUserRepository {
   async deleteUser(id: string): Promise<User> {
     const user = await MongoClient.db

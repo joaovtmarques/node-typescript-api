@@ -1,13 +1,31 @@
 import validator from 'validator';
-import { User } from '@/src/models/user';
+import { injectable } from 'tsyringe';
+import { Body, Example, Post, Route, Response, SuccessResponse } from 'tsoa';
+
+import { User } from '../../models/user';
 import { HttpRequest, HttpResponse, IController } from '../protocols';
 import { ICreateUserParams, ICreateUserRepository } from './protocols';
-import { badRequest, created, serverError } from '../helpers';
+import { badRequest, created, serverError, unprocessable } from '../helpers';
 
+@injectable()
+@Route('users')
 export class CreateUserController implements IController {
   constructor(private readonly createUserRepository: ICreateUserRepository) {}
 
+  @Example<User>({
+    id: '63c7555450a8fb5cc31b58a5',
+    firstName: 'Joao Vitor',
+    lastName: 'Marques',
+    email: 'jvsilvam@outlook.com',
+    password: '12345678',
+  })
+  @SuccessResponse('201', 'Created')
+  @Response(400, 'E-mail is invalid')
+  @Response(422, 'Field {field} is required')
+  @Response(500, 'Something went wrong')
+  @Post('/')
   async handle(
+    @Body()
     httpRequest: HttpRequest<ICreateUserParams>
   ): Promise<HttpResponse<User | string>> {
     try {
@@ -15,7 +33,7 @@ export class CreateUserController implements IController {
 
       for (const field of requiredFields) {
         if (!httpRequest.body?.[field as keyof ICreateUserParams]?.length) {
-          return badRequest(`Field ${field} is required`);
+          return unprocessable(`Field {${field}} is required`);
         }
       }
 

@@ -1,5 +1,14 @@
 import { User } from '@/src/models/user';
 
+/**
+ * @example
+ * {
+ *	"firstName": "Joao",
+ *  "lastName": "Marques",
+ *	"password": "1234"
+ * }
+ */
+
 export interface IUpdateUserParams {
   firstName?: string;
   lastName?: string;

@@ -1,3 +1,5 @@
+import { singleton } from 'tsyringe';
+
 import {
   ICreateUserParams,
   ICreateUserRepository,
@@ -6,6 +8,7 @@ import { MongoClient } from '@/src/database/mongo';
 import { User } from '@/src/models/user';
 import { MongoUser } from '../mongo-protocols';
 
+@singleton()
 export class MongoCreateUserRepository implements ICreateUserRepository {
   async createUser(params: ICreateUserParams): Promise<User> {
     const { insertedId } = await MongoClient.db

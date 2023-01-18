@@ -1,16 +1,45 @@
-import { User } from '@/src/models/user';
+import {
+  Body,
+  Example,
+  Patch,
+  Path,
+  Response,
+  Route,
+  SuccessResponse,
+} from 'tsoa';
+import { injectable } from 'tsyringe';
+
+import { User } from '../../models/user';
+
 import { badRequest, ok, serverError } from '../helpers';
 import { HttpRequest, HttpResponse, IController } from '../protocols';
 import { IUpdateUserParams, IUpdateUserRepository } from './protocols';
 
+@injectable()
+@Route('users')
 export class UpdateUserController implements IController {
   constructor(private readonly updateUserRepository: IUpdateUserRepository) {}
 
+  @Example<User>({
+    id: '63c7555450a8fb5cc31b58a5',
+    firstName: 'Joao Vitor',
+    lastName: 'Marques',
+    email: 'jvsilvam@outlook.com',
+    password: '12345678',
+  })
+  @SuccessResponse('200', 'Ok')
+  @Response(
+    400,
+    'Missing user id / Missing fields / Some received field is not allowed'
+  )
+  @Response(500, 'Something went wrong')
+  @Patch('{id}')
   async handle(
-    httpRequest: HttpRequest<IUpdateUserParams>
+    @Body() httpRequest: HttpRequest<IUpdateUserParams>,
+    @Path() id?: string
   ): Promise<HttpResponse<User | string>> {
     try {
-      const id = httpRequest?.params?.id;
+      id = httpRequest?.params?.id;
       const body = httpRequest?.body;
 
       if (!id) {

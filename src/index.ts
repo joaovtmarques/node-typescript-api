@@ -21,8 +21,6 @@ const main = async () => {
 
   RegisterRoutes(app);
 
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-
   app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
   const port = process.env.PORT || 8000;
