@@ -1,110 +1,363 @@
 {
-	"components": {
-		"examples": {},
-		"headers": {},
-		"parameters": {},
-		"requestBodies": {},
-		"responses": {},
-		"schemas": {
-			"HttpStatusCode": {
-				"enum": [
-					200,
-					201,
-					400,
-					500
-				],
-				"type": "number"
-			},
-			"User": {
-				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"firstName": {
-						"type": "string"
-					},
-					"lastName": {
-						"type": "string"
-					},
-					"email": {
-						"type": "string"
-					},
-					"password": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"id",
-					"firstName",
-					"lastName",
-					"email",
-					"password"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"HttpResponse_User-Array-or-string_": {
-				"properties": {
-					"statusCode": {
-						"$ref": "#/components/schemas/HttpStatusCode"
-					},
-					"body": {
-						"anyOf": [
-							{
-								"items": {
-									"$ref": "#/components/schemas/User"
-								},
-								"type": "array"
-							},
-							{
-								"type": "string"
-							}
-						]
-					}
-				},
-				"required": [
-					"statusCode",
-					"body"
-				],
-				"type": "object",
-				"additionalProperties": false
-			}
-		},
-		"securitySchemes": {}
-	},
-	"info": {
-		"title": "test-deploy",
-		"version": "1.0.0",
-		"license": {
-			"name": "MIT"
-		},
-		"contact": {}
-	},
-	"openapi": "3.0.0",
-	"paths": {
-		"/users": {
-			"get": {
-				"operationId": "Handle",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/HttpResponse_User-Array-or-string_"
-								}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": []
-			}
-		}
-	},
-	"servers": [
-		{
-			"url": "/"
-		}
-	]
+  "components": {
+    "examples": {},
+    "headers": {},
+    "parameters": {},
+    "requestBodies": {},
+    "responses": {},
+    "schemas": {
+      "HttpStatusCode": {
+        "enum": [200, 201, 400, 422, 500],
+        "type": "number"
+      },
+      "User": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": ["id", "firstName", "lastName", "email", "password"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "HttpResponse_User-or-string_": {
+        "properties": {
+          "statusCode": {
+            "$ref": "#/components/schemas/HttpStatusCode"
+          },
+          "body": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "required": ["statusCode", "body"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ICreateUserParams": {
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": ["firstName", "lastName", "email", "password"],
+        "type": "object",
+        "additionalProperties": false,
+        "example": {
+          "firstName": "Joao",
+          "lastName": "Marques",
+          "email": "joao@email.com",
+          "password": "1234"
+        }
+      },
+      "HttpRequest_ICreateUserParams_": {
+        "properties": {
+          "params": {},
+          "headers": {},
+          "body": {
+            "$ref": "#/components/schemas/ICreateUserParams"
+          }
+        },
+        "type": "object",
+        "additionalProperties": false
+      },
+      "HttpRequest_any_": {
+        "properties": {
+          "params": {},
+          "headers": {},
+          "body": {}
+        },
+        "type": "object",
+        "additionalProperties": false
+      },
+      "HttpResponse_User-Array-or-string_": {
+        "properties": {
+          "statusCode": {
+            "$ref": "#/components/schemas/HttpStatusCode"
+          },
+          "body": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/User"
+                },
+                "type": "array"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "required": ["statusCode", "body"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "IUpdateUserParams": {
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "additionalProperties": false,
+        "example": {
+          "firstName": "Joao",
+          "lastName": "Marques",
+          "password": "1234"
+        }
+      },
+      "HttpRequest_IUpdateUserParams_": {
+        "properties": {
+          "params": {},
+          "headers": {},
+          "body": {
+            "$ref": "#/components/schemas/IUpdateUserParams"
+          }
+        },
+        "type": "object",
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {}
+  },
+  "info": {
+    "title": "test-deploy",
+    "version": "1.0.0",
+    "license": {
+      "name": "MIT"
+    },
+    "contact": {}
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/users": {
+      "post": {
+        "operationId": "Handle",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpResponse_User-or-string_"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "id": "63c7555450a8fb5cc31b58a5",
+                      "firstName": "Joao Vitor",
+                      "lastName": "Marques",
+                      "email": "jvsilvam@outlook.com",
+                      "password": "12345678"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "E-mail is invalid"
+          },
+          "422": {
+            "description": "Field {field} is required"
+          },
+          "500": {
+            "description": "Something went wrong"
+          }
+        },
+        "security": [],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HttpRequest_ICreateUserParams_"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "Handle",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpResponse_User-Array-or-string_"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": [
+                      {
+                        "id": "63c7555450a8fb5cc31b58a5",
+                        "firstName": "Joao Vitor",
+                        "lastName": "Marques",
+                        "email": "jvsilvam@outlook.com",
+                        "password": "12345678"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Something went wrong"
+          }
+        },
+        "security": [],
+        "parameters": []
+      }
+    },
+    "/users/{id}": {
+      "delete": {
+        "operationId": "Handle",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpResponse_User-or-string_"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "id": "63c7555450a8fb5cc31b58a5",
+                      "firstName": "Joao Vitor",
+                      "lastName": "Marques",
+                      "email": "jvsilvam@outlook.com",
+                      "password": "12345678"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing user id"
+          },
+          "500": {
+            "description": "Something went wrong"
+          }
+        },
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HttpRequest_any_"
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "Handle",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpResponse_User-or-string_"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "id": "63c7555450a8fb5cc31b58a5",
+                      "firstName": "Joao Vitor",
+                      "lastName": "Marques",
+                      "email": "jvsilvam@outlook.com",
+                      "password": "12345678"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing user id / Missing fields / Some received field is not allowed"
+          },
+          "500": {
+            "description": "Something went wrong"
+          }
+        },
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HttpRequest_IUpdateUserParams_"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ]
 }

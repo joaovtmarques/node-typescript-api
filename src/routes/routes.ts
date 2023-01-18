@@ -12,13 +12,13 @@ import {
   fetchMiddlewares,
 } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { GetUsersController } from './../controllers/get-users/get-users';
-// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { CreateUserController } from './../controllers/create-user/create-user';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { UpdateUserController } from './../controllers/update-user/update-user';
-// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { DeleteUserController } from './../controllers/delete-user/delete-user';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { GetUsersController } from './../controllers/get-users/get-users';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { UpdateUserController } from './../controllers/update-user/update-user';
 import { iocContainer } from './../lib/tsyringeTsoaIocContainer';
 import { IocContainer, IocContainerFactory } from '@tsoa/runtime';
 import type { RequestHandler } from 'express';
@@ -40,22 +40,6 @@ const models: TsoaRoute.Models = {
       lastName: { dataType: 'string', required: true },
       email: { dataType: 'string', required: true },
       password: { dataType: 'string', required: true },
-    },
-    additionalProperties: false,
-  },
-  // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-  'HttpResponse_User-Array-or-string_': {
-    dataType: 'refObject',
-    properties: {
-      statusCode: { ref: 'HttpStatusCode', required: true },
-      body: {
-        dataType: 'union',
-        subSchemas: [
-          { dataType: 'array', array: { dataType: 'refObject', ref: 'User' } },
-          { dataType: 'string' },
-        ],
-        required: true,
-      },
     },
     additionalProperties: false,
   },
@@ -94,6 +78,32 @@ const models: TsoaRoute.Models = {
     additionalProperties: false,
   },
   // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+  'HttpRequest_any_': {
+    dataType: 'refObject',
+    properties: {
+      params: { dataType: 'any' },
+      headers: { dataType: 'any' },
+      body: { dataType: 'any' },
+    },
+    additionalProperties: false,
+  },
+  // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+  'HttpResponse_User-Array-or-string_': {
+    dataType: 'refObject',
+    properties: {
+      statusCode: { ref: 'HttpStatusCode', required: true },
+      body: {
+        dataType: 'union',
+        subSchemas: [
+          { dataType: 'array', array: { dataType: 'refObject', ref: 'User' } },
+          { dataType: 'string' },
+        ],
+        required: true,
+      },
+    },
+    additionalProperties: false,
+  },
+  // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
   'IUpdateUserParams': {
     dataType: 'refObject',
     properties: {
@@ -114,16 +124,6 @@ const models: TsoaRoute.Models = {
     additionalProperties: false,
   },
   // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-  'HttpRequest_any_': {
-    dataType: 'refObject',
-    properties: {
-      params: { dataType: 'any' },
-      headers: { dataType: 'any' },
-      body: { dataType: 'any' },
-    },
-    additionalProperties: false,
-  },
-  // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
 const validationService = new ValidationService(models);
 
@@ -134,47 +134,6 @@ export function RegisterRoutes(app: express.Router) {
   //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
   //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
   // ###########################################################################################################
-  app.get(
-    '/users',
-    ...fetchMiddlewares<RequestHandler>(GetUsersController),
-    ...fetchMiddlewares<RequestHandler>(GetUsersController.prototype.handle),
-
-    async function GetUsersController_handle(
-      request: any,
-      response: any,
-      next: any
-    ) {
-      const args = {};
-
-      // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-      let validatedArgs: any[] = [];
-      try {
-        validatedArgs = getValidatedArgs(args, request, response);
-
-        const container: IocContainer =
-          typeof iocContainer === 'function'
-            ? (iocContainer as IocContainerFactory)(request)
-            : iocContainer;
-
-        const controller: any = await container.get<GetUsersController>(
-          GetUsersController
-        );
-        if (typeof controller['setStatus'] === 'function') {
-          controller.setStatus(undefined);
-        }
-
-        const promise = controller.handle.apply(
-          controller,
-          validatedArgs as any
-        );
-        promiseHandler(controller, promise, response, 200, next);
-      } catch (err) {
-        return next(err);
-      }
-    }
-  );
-  // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
   app.post(
     '/users',
     ...fetchMiddlewares<RequestHandler>(CreateUserController),
@@ -223,55 +182,6 @@ export function RegisterRoutes(app: express.Router) {
     }
   );
   // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-  app.patch(
-    '/users/:id',
-    ...fetchMiddlewares<RequestHandler>(UpdateUserController),
-    ...fetchMiddlewares<RequestHandler>(UpdateUserController.prototype.handle),
-
-    async function UpdateUserController_handle(
-      request: any,
-      response: any,
-      next: any
-    ) {
-      const args = {
-        httpRequest: {
-          in: 'body',
-          name: 'httpRequest',
-          required: true,
-          ref: 'HttpRequest_IUpdateUserParams_',
-        },
-        id: { in: 'path', name: 'id', required: true, dataType: 'string' },
-      };
-
-      // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-      let validatedArgs: any[] = [];
-      try {
-        validatedArgs = getValidatedArgs(args, request, response);
-
-        const container: IocContainer =
-          typeof iocContainer === 'function'
-            ? (iocContainer as IocContainerFactory)(request)
-            : iocContainer;
-
-        const controller: any = await container.get<UpdateUserController>(
-          UpdateUserController
-        );
-        if (typeof controller['setStatus'] === 'function') {
-          controller.setStatus(undefined);
-        }
-
-        const promise = controller.handle.apply(
-          controller,
-          validatedArgs as any
-        );
-        promiseHandler(controller, promise, response, 200, next);
-      } catch (err) {
-        return next(err);
-      }
-    }
-  );
-  // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
   app.delete(
     '/users/:id',
     ...fetchMiddlewares<RequestHandler>(DeleteUserController),
@@ -305,6 +215,96 @@ export function RegisterRoutes(app: express.Router) {
 
         const controller: any = await container.get<DeleteUserController>(
           DeleteUserController
+        );
+        if (typeof controller['setStatus'] === 'function') {
+          controller.setStatus(undefined);
+        }
+
+        const promise = controller.handle.apply(
+          controller,
+          validatedArgs as any
+        );
+        promiseHandler(controller, promise, response, 200, next);
+      } catch (err) {
+        return next(err);
+      }
+    }
+  );
+  // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+  app.get(
+    '/users',
+    ...fetchMiddlewares<RequestHandler>(GetUsersController),
+    ...fetchMiddlewares<RequestHandler>(GetUsersController.prototype.handle),
+
+    async function GetUsersController_handle(
+      request: any,
+      response: any,
+      next: any
+    ) {
+      const args = {};
+
+      // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+      let validatedArgs: any[] = [];
+      try {
+        validatedArgs = getValidatedArgs(args, request, response);
+
+        const container: IocContainer =
+          typeof iocContainer === 'function'
+            ? (iocContainer as IocContainerFactory)(request)
+            : iocContainer;
+
+        const controller: any = await container.get<GetUsersController>(
+          GetUsersController
+        );
+        if (typeof controller['setStatus'] === 'function') {
+          controller.setStatus(undefined);
+        }
+
+        const promise = controller.handle.apply(
+          controller,
+          validatedArgs as any
+        );
+        promiseHandler(controller, promise, response, 200, next);
+      } catch (err) {
+        return next(err);
+      }
+    }
+  );
+  // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+  app.patch(
+    '/users/:id',
+    ...fetchMiddlewares<RequestHandler>(UpdateUserController),
+    ...fetchMiddlewares<RequestHandler>(UpdateUserController.prototype.handle),
+
+    async function UpdateUserController_handle(
+      request: any,
+      response: any,
+      next: any
+    ) {
+      const args = {
+        httpRequest: {
+          in: 'body',
+          name: 'httpRequest',
+          required: true,
+          ref: 'HttpRequest_IUpdateUserParams_',
+        },
+        id: { in: 'path', name: 'id', required: true, dataType: 'string' },
+      };
+
+      // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+      let validatedArgs: any[] = [];
+      try {
+        validatedArgs = getValidatedArgs(args, request, response);
+
+        const container: IocContainer =
+          typeof iocContainer === 'function'
+            ? (iocContainer as IocContainerFactory)(request)
+            : iocContainer;
+
+        const controller: any = await container.get<UpdateUserController>(
+          UpdateUserController
         );
         if (typeof controller['setStatus'] === 'function') {
           controller.setStatus(undefined);
