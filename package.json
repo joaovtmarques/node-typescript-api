@@ -4,8 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "start": "node dist/src/index.js",
     "start:dev": "tsx watch src/index.ts",
-    "build": "tsc --project tsconfig.json",
+    "build": "tsc && tsc-alias",
     "husky:prepare": "husky install"
   },
   "devDependencies": {
@@ -27,6 +28,7 @@
     "lint-staged": "^13.1.0",
     "nodemon": "^2.0.20",
     "prettier": "^2.8.2",
+    "tsc-alias": "^1.8.2",
     "tsx": "^3.12.2",
     "typescript": "*"
   },
