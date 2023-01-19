@@ -69,7 +69,7 @@ Além disso, é bom que se tenha um bom editor de código, como o [VSCode](https
 
 ```bash
 # Clone este repositório
-$ git clone <https://github.com/joaovtmarques/users-typescript-api>
+$ git clone <https://github.com/joaovtmarques/node-typescript-api>
 
 # Acesse a pasta do projeto no terminal
 $ cd users-typescript-api
